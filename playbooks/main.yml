@@ -1,0 +1,20 @@
+---
+- hosts:  web
+  become: true # get the super user as sudo
+  tasks:
+    - name: Update the apt-get #apt package mgr
+      apt:
+        update_cache: yes
+    - name: Install apache2
+      apt:
+        name: "apache2"
+        state:  present
+    - name: Copy file with owner and permissions # copy the webpage and replace
+      copy:
+        src: "index.html"
+        dest: "var/www/html/index.html"  
+    - name: Restart apache2 server  # restart
+      service:
+        name: apache2
+        state: restarted
+    
